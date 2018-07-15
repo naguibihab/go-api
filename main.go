@@ -29,13 +29,7 @@ func GetArticles(w http.ResponseWriter, r *http.Request) {
 // Display a single article
 func GetArticle(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	for _, article := range articles {
-		if article.Id == params["id"] {
-			json.NewEncoder(w).Encode(article)
-			return
-		}
-	}
-	json.NewEncoder(w).Encode(&Article{})
+	json.NewEncoder(w).Encode(GetArticleHelper(articles, params["id"]))
 }
 
 // Main controller
