@@ -26,6 +26,18 @@ func GetArticles(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(articles)
 }
 
+// Display a single article
+func GetArticle(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	for _, article := range articles {
+		if article.Id == params["id"] {
+			json.NewEncoder(w).Encode(article)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(&Article{})
+}
+
 // Main controller
 func main() {
 	port := "8000"
@@ -43,8 +55,19 @@ func main() {
 			&Tag{Name: "science"},
 		},
 	})
+	articles = append(articles, Article{
+		Id:    "2",
+		Title: "stores struggle with rising demand on potato chips",
+		Date:  "2016-09-23",
+		Body:  "some more text",
+		Tags: []*Tag{
+			&Tag{Name: "finance"},
+			&Tag{Name: "lifestyle"},
+		},
+	})
 
 	router.HandleFunc("/articles", GetArticles).Methods("GET")
+	router.HandleFunc("/articles/{id}", GetArticle).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 	log.Print("Started running on port " + port)
