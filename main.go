@@ -66,7 +66,6 @@ func main() {
 	router := mux.NewRouter()
 
 	// Mock data
-	// create a new item
 	articles = append(articles, Article{
 		Id:    "1",
 		Title: "latest science shows that potato chips are better for you than sugar",
