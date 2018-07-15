@@ -43,6 +43,17 @@ func GetArticlesByDateAndTagHelper(articles []Article, searchForDate string, sea
 	return result
 }
 
+func DeleteArticleHelper(articles []Article, findId string) []Article {
+	for index, article := range articles {
+		if article.Id == findId {
+			articles = append(articles[:index], articles[index+1:]...)
+			break
+		}
+		return articles
+	}
+	return articles
+}
+
 /// ---------- private functions ---------------- //
 
 // Get all articles for a particular date

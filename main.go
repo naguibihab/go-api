@@ -44,12 +44,29 @@ func GetArticlesByDateAndTag(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(GetArticlesByDateAndTagHelper(articles, params["date"], params["tagName"]))
 }
 
+// Create a new article
+func CreateArticle(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var article Article
+	_ = json.NewDecoder(r.Body).Decode(&article)
+	article.Id = params["id"]
+	articles = append(articles, article)
+	json.NewEncoder(w).Encode(articles)
+}
+
+// Delete an article
+func DeleteArticle(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	json.NewEncoder(w).Encode(DeleteArticleHelper(articles, params["id"]))
+}
+
 // Main controller
 func main() {
 	port := "8000"
 	router := mux.NewRouter()
 
 	// Mock data
+	// create a new item
 	articles = append(articles, Article{
 		Id:    "1",
 		Title: "latest science shows that potato chips are better for you than sugar",
@@ -85,6 +102,8 @@ func main() {
 	router.HandleFunc("/articles", GetArticles).Methods("GET")
 	router.HandleFunc("/articles/{id}", GetArticle).Methods("GET")
 	router.HandleFunc("/tags/{tagName}/{date}", GetArticlesByDateAndTag).Methods("GET")
+	router.HandleFunc("/articles/{id}", CreateArticle).Methods("POST")
+	router.HandleFunc("/articles/{id}", DeleteArticle).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":"+port, router))
 	log.Print("Started running on port " + port)
