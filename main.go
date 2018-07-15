@@ -105,6 +105,6 @@ func main() {
 	router.HandleFunc("/articles/{id}", CreateArticle).Methods("POST")
 	router.HandleFunc("/articles/{id}", DeleteArticle).Methods("DELETE")
 
+	log.Println("Started running on port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
-	log.Print("Started running on port " + port)
 }

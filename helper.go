@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"strings"
 )
 
@@ -26,7 +25,6 @@ func GetArticlesByDateAndTagHelper(articles []Article, searchForDate string, sea
 	}
 
 	articlesOnDate := getArticlesByDate(articles, searchForDate)
-	log.Println("Articles found on that date", articlesOnDate)
 	for _, article := range articlesOnDate {
 		for tagIndex, tag := range article.Tags {
 			if tag.Name == searchForTag {
